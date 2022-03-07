@@ -5,18 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Notification extends Model
+class Review extends Model
 {
     use HasFactory;
 
     protected $guarded = [];
 
-    public function notifiable(){
 
+    public function rateable()
+    {
         return $this->morphTo();
     }
-    public function setDataAttribute($data)
+
+    public function torateable()
     {
-        $this->attributes['data'] = json_encode($data);
-    }
+        return $this->morphTo();
+    }   
 }

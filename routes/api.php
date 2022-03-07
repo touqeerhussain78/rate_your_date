@@ -58,6 +58,17 @@ Route::group(['prefix' => 'v1'], function () {
             // Notifications
             Route::get('/getNotifications', [App\Http\Controllers\Api\User\NotificationController::class, 'index'])->name('getNotifications');
 
+            // User Interest & Hobbies
+            Route::get('interestAndHobbies', [App\Http\Controllers\Api\User\AuthController::class, 'getInterestAndHobbies'])->name('interestAndHobbies');
+
+            // Friendship
+            Route::apiResource('friends', App\Http\Controllers\Api\User\FriendshipController::class);
+            Route::get('/friends/{sender}/send-request', [App\Http\Controllers\Api\User\FriendshipController::class, 'befriend']);
+            Route::get('/friends/{sender}/unfriend', [App\Http\Controllers\Api\User\FriendshipController::class, 'unfriend']);
+            Route::get('/friends/{sender}/accept-request', [App\Http\Controllers\Api\User\FriendshipController::class, 'acceptRequest']);
+            Route::get('/friends/{sender}/reject-request', [App\Http\Controllers\Api\User\FriendshipController::class, 'rejectRequest']);
+            Route::get('/friends/pending-request/all', [App\Http\Controllers\Api\User\FriendshipController::class, 'getFriendRequest']);
+
         });
     });
 });

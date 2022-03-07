@@ -29,8 +29,7 @@ class ContactUsRequest extends ApiRequest
     public function rules()
     {
         return [
-            'first_name' => 'required',
-            'last_name' => 'required',
+            'name' => 'required',
             'email' => 'required|email',
             'message' => 'required',
         ];
@@ -39,8 +38,7 @@ class ContactUsRequest extends ApiRequest
     public function messages()
     {
         return [
-            'first_name.required' => 'First Name is required.',
-            'last_name.required' => 'Last Name is required.',
+            'name.required' => 'First Name is required.',
             'email.required' => 'Email is required.',
             'message.required' => 'Message is required.',
         ];

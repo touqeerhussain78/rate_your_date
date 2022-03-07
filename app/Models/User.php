@@ -6,14 +6,17 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Multicaret\Acquaintances\Traits\Friendable;
+use Multicaret\Acquaintances\Models\Friendship;
 //use App\Traits\Interact;
 use Multicaret\Acquaintances\Traits\CanLike;
 use Laravelista\Comments\Commenter;
+use Multicaret\Acquaintances\Status;
 use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, CanLike, Commenter, HasFactory, Notifiable;
+    use HasApiTokens, CanLike, Commenter, HasFactory, Notifiable, Friendable;
 
     /**
      * The attributes that are mass assignable.
@@ -74,6 +77,10 @@ class User extends Authenticatable
         return $this->morphMany(Comment::class, 'commentaddable');
     }
 
+    public function torateable(){
+        return $this->morphMany(Review::class, 'torateable');
+    }
+
     public function roles()
     {
         return $this->belongsToMany(Role::class);
@@ -82,6 +89,13 @@ class User extends Authenticatable
     public function hobbies()
     {
         return $this->hasMany(UserHobbie::class);
+    }
+
+    public function getFriendRequests()
+    {
+        return Friendship::query()
+            ->with('sender:id,first_name,last_name,image', 'recipient:id,first_name,last_name,image')
+            ->whereRecipient($this)->whereStatus(Status::PENDING)->get();
     }
 
 }

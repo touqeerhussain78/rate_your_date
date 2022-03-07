@@ -12,7 +12,7 @@ class NotificationController extends BaseController
     
     public function index()
     {
-        $notifications = $notification = Notification::with('notifiable')->
+        $notifications = Notification::with('notifiable')->
         whereNotifiableId(auth()->user()->id)->get();
 
         return $this->sendResponse($notifications, __('Notifications fetched successfully.'));

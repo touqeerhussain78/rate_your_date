@@ -213,11 +213,12 @@ class AuthController extends BaseController
      */
     public function contactUs(ContactUsRequest $request)
     {
-
+        $user = auth()->user();
         contactUs::create([
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
+            'name' => $request->name,
+            'user_id' => isset($user) ? $user->id : null,
             'email' => $request->email,
+            'subject' => $request->subject,
             'message' => $request->message,
         ]);
         return $this->sendResponse(null, __('Form submitted successfully.'));
@@ -243,6 +244,19 @@ class AuthController extends BaseController
         } else {
             return $this->sendError(__('responseMessages.oldPasswordMismatch'), false);
         }
+    }
+
+    public function getInterestAndHobbies()
+    {
+
+        $user = auth()->user();
+        if ($user) {
+            $user = $user->load('hobbies');
+
+            return $this->sendResponse($user, __('Interest and hobbies fetched successfully.'));
+        }
+
+        return $this->sendResponse(__('No User Found!'), false);
     }
 
 }

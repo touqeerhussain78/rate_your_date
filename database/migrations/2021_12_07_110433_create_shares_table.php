@@ -17,6 +17,9 @@ class CreateSharesTable extends Migration
             $table->id();
             $table->morphs("shareable");
             $table->longText("description");
+            $table->boolean('is_approved')->default(false);
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->morphs('sharedable');
             $table->timestamps();
         });
     }

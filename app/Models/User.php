@@ -44,6 +44,7 @@ class User extends Authenticatable
         'device_id',
         'device_type',
         'status',
+        'profile_step',
     ];
 
     /**

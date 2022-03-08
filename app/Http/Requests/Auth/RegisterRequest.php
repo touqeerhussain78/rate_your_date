@@ -29,6 +29,7 @@ class RegisterRequest extends ApiRequest
     public function rules()
     {
         return [
+            'full_name'    => 'required',
             'first_name'    => 'required',
             'last_name'    => 'required',
             'phone'    => 'required',
@@ -36,6 +37,7 @@ class RegisterRequest extends ApiRequest
             'password'     => 'required|string|min:8',
             'password_confirmation' =>   'required|same:password',
             'role_id'    => 'required|exists:roles,id',
+            'profile_step'    => 'required',
         ];
     }
 
@@ -46,12 +48,14 @@ class RegisterRequest extends ApiRequest
             'email.required' => 'Email is required!',
             'email.unique' => 'Email is already taken!',
             'first_name.required' => 'First Name is required!',
+            'full_name.required' => 'Full Name is required!',
             'last_name.required' => 'Last Name is required!',
             'password.required' => 'Password is required!',
             'password_confirmation.required' => 'Password Confirmation is required!',
             'password_confirmation.same' => 'Password And Confirmation Does not match!',
             'role_id.required'    => 'Role id is required!',
             'role_id.exists'    => 'Role Does not exist!',
+            'profile_step.required' => 'Profile step is required!',
         ];
     }
 

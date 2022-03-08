@@ -38,6 +38,7 @@ class UpdateProfileRequest extends ApiRequest
             'country' =>   'required',
             'state' =>   'required',
             'city' =>   'required',
+            'profile_step' => 'required',
         ];
     }
 }

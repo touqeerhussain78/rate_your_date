@@ -6,6 +6,7 @@ use Hash;
 use Mail;
 use Carbon\Carbon;
 use App\Models\User;
+use App\Models\UserHobbie;
 use App\Models\Wallet;
 use App\Mail\ForgotCode;
 use App\Models\ContactUs;
@@ -35,6 +36,8 @@ class AuthController extends BaseController
         $userCreated = User::create([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
+            'name' => $request->full_name,
+            'profile_step' => $request->profile_step,
             'phone' => $request->phone,
             'email' => $request->email,
             'password' => $password,
@@ -161,6 +164,7 @@ class AuthController extends BaseController
 
         $user = auth()->user();
         if ($user) {
+            $user = $user->load('hobbies');
             return $this->sendResponse(auth()->user(), __('User Accessed!'));
         }
 
@@ -197,8 +201,18 @@ class AuthController extends BaseController
             'gender_interest' => $request->gender_interest,
             'radius' => $request->radius,
             'about' => $request->about,
+            'profile_step' => $request->profile_step,
             'image' => isset($image) ? $image : null,
         ]);
+
+        if (!empty($request->hobbies)) {
+            foreach($request->hobbies as $hobbie) {
+                UserHobbie::create([
+                    'user_id' => auth()->user()->id,
+                    'name' => $hobbie,
+                ]);
+            }
+        }
 
         if ($profileUpdated) {
             return $this->sendResponse(null, __('Profile updated successfully.'));
